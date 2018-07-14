@@ -1,0 +1,11 @@
+-Traverse DOM and instert more meaningful ids/classes into the elements of interest
+
+    -Iterate through divs w/ align="center" attribute 
+        -If the child element is identical ->
+            -If the child element of the child element has width="661" attribute ->
+                -Append class identifying transaction 
+
+-Iterate through transaction class 
+
+    
+
