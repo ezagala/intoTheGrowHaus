@@ -2,8 +2,11 @@ const fs = require('fs');
 const http = require('http');
 const cheerio = require('cheerio')
 
+// This script will needs to run only after page load
+
 http.createServer(function (req, res) {
-    fs.readFile('sampleData.html', function (err, data) {
+    fs.readFile('JanToJulyTransactionHistory.html', function (err, data) {
+        
         const $ = cheerio.load(data);
 
         // Iterate through divs of interest and add transaction class
@@ -18,75 +21,111 @@ http.createServer(function (req, res) {
         })
 
         // Loop through each transation
-        $(".transaction").each(function(i, element){
+        $(".transaction").each(function (i, element) {
             // Transaction that will be push to the DB
-            const transaction = {}; 
+            const transaction = {
+                transID: null,
+                date: null,
+                customer: null,
+                tenderType: null, 
+                transTotal: null, 
+                description: []
+            };
 
             // Paths for Transaction id, date and customer 
             const targetTrans = $(this).children('div[align="center"]').children('table[width="661"]').children('tbody').children('tr');
-            const transID = $(this).children('div[align="center"]').children('table[width="661"]').children('tbody').children('tr').children('td[width="95"]'); 
+            const transID = $(this).children('div[align="center"]').children('table[width="661"]').children('tbody').children('tr').children('td[width="95"]');
             const date = $(this).children('div[align="center"]').children('table[width="661"]').children('tbody').children('tr').children('td[width="155"]')
             const customer = $(this).children('div[align="center"]').children('table[width="661"]').children('tbody').children('tr').children('td[width="118"]')
 
             // Paths for item descriptions, accommodating for retail keys
-            const itemName = $(this).children('div[align="center"]').children('table[width="661"]').children('tbody').children('tr[style="color: #000000"]').children('td[align="left"]'); 
-            const itemNameOverRetail = $(this).children('div[align="center"]').children('table[width="661"]').children('tbody').children('tr[style="color: #0000FF"]').children('td[align="left"]'); 
-            const itemNameVoid = $(this).children('div[align="center"]').children('table[width="661"]').children('tbody').children('tr[style="color: #FF0000"]').children('td[align="left"]'); 
-            const itemNameBelowRetail = $(this).children('div[align="center"]').children('table[width="661"]').children('tbody').children('tr[style="color: #009900"]').children('td[align="left"]'); 
+            const itemName = $(this).children('div[align="center"]').children('table[width="661"]').children('tbody').children('tr[style="color: #000000"]').children('td[align="left"]');
+            const itemNameOverRetail = $(this).children('div[align="center"]').children('table[width="661"]').children('tbody').children('tr[style="color: #0000FF"]').children('td[align="left"]');
+            const itemNameVoid = $(this).children('div[align="center"]').children('table[width="661"]').children('tbody').children('tr[style="color: #FF0000"]').children('td[align="left"]');
+            const itemNameBelowRetail = $(this).children('div[align="center"]').children('table[width="661"]').children('tbody').children('tr[style="color: #009900"]').children('td[align="left"]');
 
             // Paths for item quantities, accommodating for retail keys
-            const itemQuatity = $(this).children('div[align="center"]').children('table[width="661"]').children('tbody').children('tr[style="color: #000000"]').children('td[align="right"]'); 
-            const itemQuatityOverRetail = $(this).children('div[align="center"]').children('table[width="661"]').children('tbody').children('tr[style="color: #0000FF"]').children('td[align="right"]'); 
-            const itemQuatityVoid = $(this).children('div[align="center"]').children('table[width="661"]').children('tbody').children('tr[style="color: #FF0000"]').children('td[align="right"]'); 
-            const itemQuatityBelowRetail = $(this).children('div[align="center"]').children('table[width="661"]').children('tbody').children('tr[style="color: #009900"]').children('td[align="right"]'); 
+            const itemQuatity = $(this).children('div[align="center"]').children('table[width="661"]').children('tbody').children('tr[style="color: #000000"]').children('td[align="right"]');
+            const itemQuatityOverRetail = $(this).children('div[align="center"]').children('table[width="661"]').children('tbody').children('tr[style="color: #0000FF"]').children('td[align="right"]');
+            const itemQuatityVoid = $(this).children('div[align="center"]').children('table[width="661"]').children('tbody').children('tr[style="color: #FF0000"]').children('td[align="right"]');
+            const itemQuatityBelowRetail = $(this).children('div[align="center"]').children('table[width="661"]').children('tbody').children('tr[style="color: #009900"]').children('td[align="right"]');
 
-            // Paths for item sub-totals, accommodating for retail keys 
-            const itemSubTotal = $(this).children('div[align="center"]').children('table[width="661"]').children('tbody').children('tr[style="color: #000000"]').children('td[valign="top"]'); 
-            const itemSubTotalOverRetail = $(this).children('div[align="center"]').children('table[width="661"]').children('tbody').children('tr[style="color: #0000FF"]').children('td[valign="top"]'); 
-            const itemSubTotalVoid = $(this).children('div[align="center"]').children('table[width="661"]').children('tbody').children('tr[style="color: #FF0000"]').children('td[valign="top"]'); 
-            const itemSubTotalBelowRetail = $(this).children('div[align="center"]').children('table[width="661"]').children('tbody').children('tr[style="color: #009900"]').children('td[valign="top"]'); 
+            // Tender type path 
+            const tenderType = $(this).children('div[align="center"]').children('table[width="630"]').children('tbody').children('tr').eq(1).children('td').first(); 
+
+            // Transaction total path 
+            const transTotal =  $(this).children('div[align="center"]').next().next().next().children('table[width="630"]').children('tbody').children('tr').eq(1).children('td').last(); ; 
+
+            //Update transaction with tender type & total 
+            transaction.tenderType = tenderType.html().slice(30).trim()
+            transaction.transTotal = transTotal.html().slice(29).trim()
 
             // Capture transaction id, date, and customer 
             grabTrans(transID);
             grabTrans(date);
             grabTrans(customer);
 
-            // Capture item description (for each retail if, there is one)
+            // Capture item description accommodating for retail keys
             grabDescription(itemName);
             grabDescription(itemNameVoid);
-            grabDescription(itemNameOverRetail);          
+            grabDescription(itemNameOverRetail);
             grabDescription(itemNameBelowRetail);
 
-            // Capture item quantity (for each retail if, there is one)
+            // Capture item quantity accommodating for retail keys
             grabDescription(itemQuatity);
             grabDescription(itemQuatityVoid);
             grabDescription(itemQuatityOverRetail);
             grabDescription(itemQuatityBelowRetail);
 
-             // Capture item sub-total (for each retail if, there is one)
-             grabDescription(itemSubTotal);
-             grabDescription(itemSubTotalVoid);
-             grabDescription(itemSubTotalOverRetail);
-             grabDescription(itemSubTotalBelowRetail);
 
             function grabTrans(path) {
                 if (path) {
-                    transaction.transID = path.html(); 
-                    console.log(path.html());
+                    switch (path) {
+                        case transID:
+                            transaction.transID = path.html().slice(-5).trim();
+                            break;
+                        case date:
+                            transaction.date = path.html().slice(-14).trim();
+                            break;
+                        case customer:
+                            transaction.customer = path.html().slice(27).trim();
+                            break;
+                        default:
+                            console.log("The path for the transaction is not correct");
+                    }
                 }
             }
 
-            function grabDescription (path) {
-                path.each(function(i, element){
-                    console.log("Rtn grabDescription ", $(this).html());
+            // Still a lil buggy 
+            // Build out items and update transaction.description 
+            function grabDescription(path) {
+                let item = {};
+                path.each(function (i, element) {
+                    switch (path) {
+                        case itemName:
+                        case itemNameVoid:
+                        case itemNameOverRetail:
+                        case itemNameBelowRetail:
+                            item.name = $(this).html();
+                            break;
+                        case itemQuatity:
+                        case itemQuatityVoid:
+                        case itemQuatityOverRetail:
+                        case itemQuatityBelowRetail:
+                            transaction.description[i].quantity = $(this).html();
+                            break;
+                        default: console.log("The path for the transaction is not correct");
+                    }
+                    // Empty objects were being pushed into description. (I'm not sure why.) This prevents that from happening. 
+                    if (!(Object.keys(item).length === 0 && item.constructor === Object)) {
+                        transaction.description.push(item)
+                    }
+
                 })
-            }
+            }   
 
+            console.log("The transaction is ", transaction);
 
-            //console.log("The transaction is ", transaction);
-
-            // EXAMPLE: You might use slice to peel off the relevant data
-            //  console.log(targetPath.children('td[width="95"]').html().slice(-5))
         })
 
         res.write($.html());

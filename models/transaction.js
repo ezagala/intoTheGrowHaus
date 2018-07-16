@@ -5,9 +5,8 @@ const transactionSchema = new Schema({
   transID: {type: String, required: true},
   date: { type: Date, required: true}, 
   customer: {type: String, required: true}, 
-  description: {type: Map, of: String}, 
+  description: {type: Array}, 
   tenderType: {type: String}, 
-  taxTotal: {type: Number}, 
   transTotal: {type: Number}
 });
 
