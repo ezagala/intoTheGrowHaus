@@ -11,6 +11,6 @@ const customerSchema = new Schema({
   adults: {type: String},  
 });
 
-const Customer = mongoose.model("transaction", customerSchema);
+const Customer = mongoose.model("Customer", customerSchema);
 
 module.exports = Customer;  

@@ -1,10 +1,12 @@
+import axios from "axios";
+
 export default {
   // Gets all
   getTransaction: function() {
     return axios.get("/api/transactions");
   },
   // Gets w/ specific id
-  getTransaction: function(id) {
+  getTransactions: function(id) {
     return axios.get("/api/transactions/" + id);
   },
   // Deletes w/ specific id 
@@ -14,5 +16,9 @@ export default {
   // Saves to the DB 
   saveTrangetTransaction: function(transactionData) {
     return axios.post("/api/transactions", transactionData);
+  },
+  // Creats new user 
+  postUser: function(userData) {
+    return axios.post("/api/transactions/users", userData); 
   }
 };

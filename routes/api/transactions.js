@@ -8,10 +8,13 @@ router.route("/")
 
 // Matches with "/api/transactions/:id"
 // Will need to add condition of findby transaction id and customer type
-router
-  .route("/:id")
+router.route("/:id")
   .get(controller.findById)
   .put(controller.update)
   .delete(controller.remove);
+
+  // Matches with "/api/transactions/users
+  router.route("/users")
+    .post(controller.createUser); 
 
 module.exports = router;

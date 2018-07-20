@@ -5,14 +5,8 @@ import "./Nav.css";
 const Nav = (prop) => (
   <nav className="navbar navbar-expand-lg navbar-dark bg-primary">
     <a className="navbar-brand" href="/">
-      NYT Article Curator
+      A View Into the GrowHaus
     </a>
-
-    <button className="btn btn-light">
-      <a href="/Saved">
-        Saved
-            </a>
-    </button>
   </nav>
 );
 
