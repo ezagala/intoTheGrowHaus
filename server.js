@@ -1,13 +1,33 @@
-var createError = require('http-errors');
-var express = require('express');
+const createError = require('http-errors');
+const express = require('express');
 const mongoose = require("mongoose");
-var path = require('path');
-var cookieParser = require('cookie-parser');
-var logger = require('morgan');
+const path = require('path');
+const cookieParser = require('cookie-parser');
+const logger = require('morgan');
 const routes = require("./routes");
-const port = process.env.PORT || '3001';
+// const port = process.env.PORT || '3001';
 
-var app = express();
+// Modeled after an example 
+const port = normalizePort(process.env.PORT || '3001');
+// app.set('port', port);
+
+const app = express();
+
+function normalizePort(val) {
+  var port = parseInt(val, 10);
+
+  if (isNaN(port)) {
+      // named pipe
+      return val;
+  }
+
+  if (port >= 0) {
+      // port number
+      return port;
+  }
+
+  return false;
+}
 
 app.use(logger('dev'));
 app.use(express.json());
