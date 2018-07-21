@@ -1,32 +1,35 @@
 import React, { Component } from "react";
 import API from "../../utils/API";
+import "./login.css"
 import { Col, Row, Container } from "../../components/Grid";
 import { Input, LoginBtn } from "../../components/Form";
 import { GoogleLogin } from 'react-google-login';
 import config from '../../config.json';
 
+
+
 class Login extends Component {
     state = {
-        isAuthenticated: false, 
-        user: null, 
+        isAuthenticated: false,
+        user: null,
     };
 
-    googleResponse = (response) => { console.log("The resonse is: ", response)};
+    googleResponse = (response) => { console.log("The resonse is: ", response) };
 
     onFailure = (error) => {
         alert(error);
     }
 
     googleResponse = (response) => {
-        API.postUser({access_token: response.accessToken}).then(r => {
-            this.setState({isAuthenticated: true, user: r.data._id}); 
+        API.postUser({ access_token: response.accessToken }).then(r => {
+            this.setState({ isAuthenticated: true, user: r.data._id });
             console.log(this.state)
         })
-    };  
+    };
 
     /* 
     componentDidMount() {
-    */ 
+    */
 
     handleInputChange = event => {
         const { name, value } = event.target;
@@ -40,30 +43,15 @@ class Login extends Component {
     };
 
     render() {
-        return (
-            <Container fluid>
+        let content =
+            <Container fluid >
                 <Row>
                     <Col size="md-4"></Col>
                     <Col size="md-4">
                         <form>
-                            <Input
-                                value={this.state.username}
-                                onChange={this.handleInputChange}
-                                name="username"
-                                placeholder="Username"
-                            />
-                            <Input
-                                value={this.state.password}
-                                onChange={this.handleInputChange}
-                                name="password"
-                                placeholder="Password"
-                            />
-                            <LoginBtn
-                                disabled={!(this.state.username && this.state.password)}
-                                onClick={this.handleFormSubmit}
-                            >
-                                Login
-                            </LoginBtn>
+                            <h1>Welcome!</h1>
+                            <h4>Login with Google below</h4>
+                            <hr/> 
                             <GoogleLogin
                                 clientId={config.GOOGLE_CLIENT_ID}
                                 buttonText="Login"
@@ -75,6 +63,10 @@ class Login extends Component {
                     <Col size="md-4"></Col>
                 </Row>
             </Container>
+        return (
+            <div className="App">
+                {content}
+            </div>
         );
     }
 }

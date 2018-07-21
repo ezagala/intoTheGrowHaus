@@ -5,6 +5,10 @@ import Search from "./pages/Search";
 import NoMatch from "./pages/NoMatch";
 import Nav from "./components/Nav";
 
+
+
+
+
 const App = () => (
   <Router>
     <div>
