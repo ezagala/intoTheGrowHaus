@@ -19,6 +19,7 @@ export default {
   },
   // Creats new user 
   postUser: function(userData) {
-    return axios.post("/api/transactions/users", userData); 
+    // Hash data here?
+    return axios.post("/api/transactions/auth", userData); 
   }
 };

@@ -7,8 +7,6 @@ import config from '../../config.json';
 
 class Login extends Component {
     state = {
-        username: "",
-        password: "",
         isAuthenticated: false, 
         user: null, 
     };
@@ -20,8 +18,7 @@ class Login extends Component {
     }
 
     googleResponse = (response) => {
-        console.log(typeof response.accessToken); 
-        API.postUser({googleID: response.accessToken}).then(r => {
+        API.postUser({access_token: response.accessToken}).then(r => {
             this.setState({isAuthenticated: true, user: r.data._id}); 
             console.log(this.state)
         })
@@ -29,23 +26,7 @@ class Login extends Component {
 
     /* 
     componentDidMount() {
-        axios.get('/auth/user').then(response => {
-			console.log(response.data)
-			if (!!response.data.user) {
-				console.log('THERE IS A USER')
-				this.setState({
-					loggedIn: true,
-					user: response.data.user
-				})
-			} else {
-				this.setState({
-					loggedIn: false,
-					user: null
-				})
-			}
-		})
-     }
-     */ 
+    */ 
 
     handleInputChange = event => {
         const { name, value } = event.target;
