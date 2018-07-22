@@ -1,0 +1,27 @@
+.searchForm {
+    text-align: center; 
+    margin-top: 5%; 
+    font-family: 'Arimo', sans-serif;
+    background: rgb(0, 25, 87); /* This is for ie8 and below */
+    background: rgba(246, 243, 243, 0.719); 
+    padding: 1em 2em; 
+    border-radius: 10px;
+}
+
+.resultsPanel {
+    text-align: center; 
+    margin-top: 5%; 
+    font-family: 'Arimo', sans-serif;
+    background: rgb(0, 25, 87); /* This is for ie8 and below */
+    background: rgba(246, 243, 243, 0.719); 
+    padding: 1em 2em; 
+    border-radius: 10px;
+}
+
+.btn {
+    margin-top: 2.5%; 
+}
+
+.icon {
+    margin-right: 1.5%; 
+}

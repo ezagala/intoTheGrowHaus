@@ -46,9 +46,6 @@ class Login extends Component {
         });
     };
 
-    handleFormSubmit = event => {
-        event.preventDefault();
-    };
 
     render() {
         let content = this.state.isAuthenticated ? (
@@ -58,7 +55,7 @@ class Login extends Component {
                     <Row>
                         <Col size="md-4"></Col>
                         <Col size="md-4">
-                            <form>
+                            <form className="welcomeForm">
                                 <h1>Welcome!</h1>
                                 <h4>Login with Google below</h4>
                                 <hr />
