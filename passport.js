@@ -1,18 +1,19 @@
-// 'use strict';
+'use strict';
 
-const passport = require('passport');
+var passport = require('passport');
 const db = require("./models");
-const GoogleTokenStrategy = require('passport-google-token').Strategy;
-const config = require('./config');
+var GoogleTokenStrategy = require('passport-google-token').Strategy;
+var config = require('./config');
 
 module.exports = function () {
+
     passport.use(new GoogleTokenStrategy({
-        clientID: config.googleAuth.clientID,
-        clientSecret: config.googleAuth.clientSecret
-    },
-    function (accessToken, refreshToken, profile, done) {
-        db.User.upsertGoogleUser(accessToken, refreshToken, profile, function(err, user) {
-            return done(err, user);
-        });
-    }));
-}
+            clientID: config.googleAuth.clientID,
+            clientSecret: config.googleAuth.clientSecret
+        },
+        function (accessToken, refreshToken, profile, done) {
+            db.User.upsertGoogleUser(accessToken, refreshToken, profile, function(err, user) {
+                return done(err, user);
+            });
+        }));
+};

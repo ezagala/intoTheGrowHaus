@@ -5,35 +5,19 @@ const path = require('path');
 const cookieParser = require('cookie-parser');
 const logger = require('morgan');
 const routes = require("./routes");
-// const port = process.env.PORT || '3001';
+const port = process.env.PORT || '3001';
+const passport = require("passport")
 
-// Modeled after an example 
-const port = normalizePort(process.env.PORT || '3001');
-// app.set('port', port);
-
-const app = express();
-
-function normalizePort(val) {
-  var port = parseInt(val, 10);
-
-  if (isNaN(port)) {
-      // named pipe
-      return val;
-  }
-
-  if (port >= 0) {
-      // port number
-      return port;
-  }
-
-  return false;
-}
+const app = express(); 
 
 app.use(logger('dev'));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'client/build')));
+
+app.use(passport.initialize())
+app.use(passport.session()) // will call the deserializeUser
 
 // Add both API and view routes
 app.use(routes);

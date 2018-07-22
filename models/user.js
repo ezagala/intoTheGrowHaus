@@ -1,7 +1,7 @@
 const mongoose = require("mongoose");
 const Schema = mongoose.Schema;
 
-const userSchema = new Schema({
+const UserSchema = new Schema({
   email: {
     type: String, required: true,
     trim: true, unique: true,
@@ -17,34 +17,36 @@ const userSchema = new Schema({
   }
 });
 
-userSchema.statics.upsertGoogleUser = function (accessToken, refreshToken, profile, cb) {
+UserSchema.set('toJSON', {getters: true, virtuals: true});
+
+UserSchema.statics.upsertGoogleUser = function(accessToken, refreshToken, profile, cb) {
   var that = this;
   return this.findOne({
-    'googleProvider.id': profile.id
-  }, function (err, user) {
-    // no user was found, lets create a new one
-    if (!user) {
-      var newUser = new that({
-        fullName: profile.displayName,
-        email: profile.emails[0].value,
-        googleProvider: {
-          id: profile.id,
-          token: accessToken
-        }
-      });
+      'googleProvider.id': profile.id
+  }, function(err, user) {
+      // no user was found, lets create a new one
+      if (!user) {
+          var newUser = new that({
+              fullName: profile.displayName,
+              email: profile.emails[0].value,
+              googleProvider: {
+                  id: profile.id,
+                  token: accessToken
+              }
+          });
 
-      newUser.save(function (error, savedUser) {
-        if (error) {
-          console.log(error);
-        }
-        return cb(error, savedUser);
-      });
-    } else {
-      return cb(err, user);
-    }
+          newUser.save(function(error, savedUser) {
+              if (error) {
+                  console.log(error);
+              }
+              return cb(error, savedUser);
+          });
+      } else {
+          return cb(err, user);
+      }
   });
 };
 
-const User = mongoose.model("user", userSchema);
+const User = mongoose.model("user", UserSchema);
 
 module.exports = User;

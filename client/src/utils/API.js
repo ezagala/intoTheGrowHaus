@@ -16,10 +16,5 @@ export default {
   // Saves to the DB 
   saveTrangetTransaction: function(transactionData) {
     return axios.post("/api/transactions", transactionData);
-  },
-  // Creats new user 
-  postUser: function(userData) {
-    // Hash data here?
-    return axios.post("/api/transactions/auth", userData); 
   }
 };

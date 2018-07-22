@@ -1,5 +1,6 @@
 const router = require("express").Router();
 const controller = require("../../controller/controller");
+var { generateToken, sendToken } = require('../../utils/token.utils');
 var passport = require('passport');
 require('../../passport')();
 
@@ -21,16 +22,16 @@ router.route("/users")
   .post(controller.createUser);
 
 // Matches with "/api/transactions/auth
-router.route("/auth")
-  .post(passport.authenticate('google-token', { session: true }), function (req, res, next) {
-    if (!req.user) {
-      return res.send(401, 'User Not Authenticated');
-    }
-    req.auth = {
-      id: req.user.id
-    };
+router.route('/auth/')
+    .post(passport.authenticate('google-token', {session: false}), function(req, res, next) {
+        if (!req.user) {
+            return res.send(401, 'User Not Authenticated');
+        }
+        req.auth = {
+            id: req.user.id
+        };
 
-    next();
-  });
+        next();
+    }, generateToken, sendToken);
 
 module.exports = router;
