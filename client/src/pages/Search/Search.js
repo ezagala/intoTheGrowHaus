@@ -60,9 +60,9 @@ class Search extends Component {
                                         <ControlLabel>Customer Type</ControlLabel>
                                         <FormControl componentClass="select" placeholder="select">
                                             <option value="select">Select...</option>
-                                            <option value="customerOne">Zone One</option>
-                                            <option value="customerTwo">Zone Two</option>
-                                            <option value="customerThree">Zone Three</option>
+                                            <option value="1">Zone One</option>
+                                            <option value="2">Zone Two</option>
+                                            <option value="3">Zone Three</option>
                                         </FormControl>
                                     </FormGroup>
                                     <FieldGroup
