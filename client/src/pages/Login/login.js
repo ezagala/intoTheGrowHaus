@@ -1,6 +1,5 @@
 import React, { Component } from "react";
 import {Redirect} from "react-router-dom";
-
 // import API from "../../utils/API";
 import "./Login.css"
 import { Col, Row, Container } from "../../components/Grid";
