@@ -13,7 +13,7 @@ class Login extends Component {
     state = {
         isAuthenticated: false,
         user: null,
-    };
+    };  
 
     onFailure = (error) => {
         alert(error);

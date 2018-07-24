@@ -1,6 +1,7 @@
 import React, { Component } from "react";
+// import {Redirect} from "react-router-dom";
 import DatePicker from 'react-date-picker';
-import { FormGroup, ControlLabel, FormControl, HelpBlock } from 'react-bootstrap';
+import { FormGroup, ControlLabel, FormControl, HelpBlock, Modal } from 'react-bootstrap';
 // import moment from 'moment';
 // import API from "../../utils/API";
 import "./Search.css"
@@ -14,8 +15,24 @@ class Search extends Component {
         customer: null,
         startDate: null,
         endDate: null,
-        transactions: []
+        transactions: [], 
+        show: false
     };
+
+    componentDidMount = ( 
+        console.log(this.state)
+    );
+
+    handleClose = (
+        this.setState({show: false})
+    ); 
+
+    handleShow = (
+        this.setState({show: true})
+    );
+
+    onStartDateChange = startDate => this.setState({ startDate });
+    onEndDateChange = endDate => this.setState({ endDate });
 
     handleInputChange = event => {
         const { name, value } = event.target;
@@ -31,11 +48,9 @@ class Search extends Component {
     render() {
         return (
             <div>
-                <Nav />
-
+                <Nav onClick={this.logout} />
                 <Container fluid>
                     <Row>
-
                         <Col size="md-6">
                             <div className="searchForm">
                                 <h1>Search</h1>
@@ -81,7 +96,6 @@ class Search extends Component {
                             <div className="resultsPanel">
                                 <h1>Results</h1>
                                 <hr />
-
                                 {this.state.transactions.length ? (
                                     <List>
                                         {this.state.transactions.map(transaction => (
@@ -102,13 +116,29 @@ class Search extends Component {
                                     )}
                             </div>
                         </Col>
-
                     </Row>
                 </Container>
+                {/* Upload modal */}
+                <Modal show={this.state.show} onHide={this.handleClose}>
+                    <Modal.Header closeButton>
+                        <Modal.Title>File Upload</Modal.Title>
+                        <Modal.Body> 
+                            Use the file upload below to upload a new report - 
+                            <form ref='uploadForm' 
+                                id='uploadForm' 
+                                action= '' //this will be the express post route 
+                                method='post' 
+                                encType="multipart/form-data"> 
+                            <input type="file" name="report" />
+                            <input type='submit' value='Upload!' />
+                            </form> 
+                        </Modal.Body>
+                     </Modal.Header>
+                </Modal>
             </div>
-        )
-    }
-}
+        );
+    };
+};
 
 export default Search;
 
