@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 // import {Redirect} from "react-router-dom";
 import DatePicker from 'react-date-picker';
-import { FormGroup, ControlLabel, FormControl} from 'react-bootstrap';
+import { FormGroup, ControlLabel, FormControl, ListGroup, ListGroupItem} from 'react-bootstrap';
 import moment from 'moment';
 import API from "../../utils/API";
 import "./Search.css"
@@ -19,7 +19,7 @@ class Search extends Component {
     };
 
     componentDidMount() {
-        this.loadTransactions();
+        // this.loadTransactions();
     }
 
     loadTransactions = data => {
@@ -43,18 +43,21 @@ class Search extends Component {
 
     handleFormSubmit = event => {
         event.preventDefault();
-
-        // const startDate = new Date(this.state.startDate)
-        // const endDate = new Date(this.state.endDate) 
-
-        console.log(typeof this.state.customer);
-
-        API.queryArticles({
+        API.query({
             startDate: this.state.startDate, 
-            endDate: this.state.endDate, 
+            endDate: this.state.endDate,    
             customer: this.state.customer.toString()
         })
-            .then( res => console.log(res))
+            .then( res => {
+                const transactions = res.data
+            
+                // for (const data in transactions) {
+                //     transactions.push(transactions[data]); 
+                // }
+ 
+                this.loadTransactions(transactions);
+                console.log("Response: ", transactions); 
+            })
             .catch(err => console.log(err)); 
 
 
@@ -123,16 +126,16 @@ class Search extends Component {
                                 {this.state.transactions.length ? (
                                     <List>
                                         {this.state.transactions.map(transaction => (
-                                            <ListItem key={transaction._id}>
-                                                <List>
-                                                    <ListItem>Transaction ID: {transaction.transID}</ListItem>
-                                                    <ListItem>Customer: {transaction.customer}</ListItem>
-                                                    <ListItem>Date: {transaction.date}</ListItem>
-                                                    <ListItem>Tender Type: {transaction.tenderType}</ListItem>
-                                                    <ListItem>Description: {transaction.description}</ListItem>
-                                                    <ListItem>Transaction Total: {transaction.transTotal}</ListItem>
-                                                </List>
-                                            </ListItem>
+                                            <ListGroupItem key={transaction._id}>
+                                                <h4>Transaction ID: {transaction.transID}</h4>
+                                                <hr/> 
+                                                <ListGroup>
+                                                    <p>- Customer: {transaction.customer}</p>
+                                                    <p>- Date: {moment(transaction.date).format("MM/DD/YYYY")}</p>
+                                                    <p>- Tender Type: {transaction.tenderType}</p>
+                                                    <p>- Total: ${transaction.transTotal}</p>
+                                                </ListGroup>
+                                            </ListGroupItem>
                                         ))}
                                     </List>
                                 ) : (

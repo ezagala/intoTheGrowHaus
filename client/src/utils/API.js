@@ -17,7 +17,7 @@ export default {
   saveTrangetTransaction: function(transactionData) {
     return axios.post("/api/transactions", transactionData);
   }, 
-  queryArticles: function(conditions) {
+  query: function(conditions) {
     return axios.get("/api/transactions/query", {
       params: {
         startDate: conditions.startDate, 

@@ -1,9 +1,11 @@
 .list-overflow-container {
   max-height: 545px;
   border: 1px #DDDDDD solid;
-  border-radius: 4px;
+  border-radius: 10px;
   overflow-y: scroll;
   overflow-x: hidden;
+  background: rgb(0, 25, 87); /* This is for ie8 and below */
+  background: rgba(246, 243, 243, 0.719); 
 }
 
 .list-overflow-container ul {
