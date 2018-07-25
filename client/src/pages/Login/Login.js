@@ -5,7 +5,7 @@ import "./Login.css"
 import { Col, Row, Container } from "../../components/Grid";
 // import { Input, LoginBtn } from "../../components/Form";
 import { GoogleLogin } from 'react-google-login';
-import config from '../../config.js';
+import config from '../../config.json';
 
 
 class Login extends Component {

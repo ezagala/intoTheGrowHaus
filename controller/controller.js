@@ -35,6 +35,24 @@ module.exports = {
       .then(dbModel => res.json(dbModel))
       .catch(err => res.status(422).json(err));
   },
+  query: function (req, res) {
+
+    const startDate = new Date(req.query.startDate)
+    const endDate = new Date(req.query.endDate)
+
+    console.log('startDate', startDate);
+
+    db.Transaction
+      .find({
+        customer: req.query.customer,
+        date: {
+          $gte: startDate.toISOString(), 
+          $lt: endDate.toISOString()
+        }
+      })
+      .then(dbModel => res.json(dbModel))
+      .catch(err => res.status(422).json(err));
+  },
   // Not currently in use
   createUser: function (req, res) {
     db.User

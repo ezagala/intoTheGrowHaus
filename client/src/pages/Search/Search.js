@@ -1,35 +1,35 @@
 import React, { Component } from "react";
 // import {Redirect} from "react-router-dom";
 import DatePicker from 'react-date-picker';
-import { FormGroup, ControlLabel, FormControl, HelpBlock, Modal } from 'react-bootstrap';
-// import moment from 'moment';
-// import API from "../../utils/API";
+import { FormGroup, ControlLabel, FormControl} from 'react-bootstrap';
+import moment from 'moment';
+import API from "../../utils/API";
 import "./Search.css"
 import Nav from "../../components/Nav"
 import { Col, Row, Container } from "../../components/Grid";
 import { List, ListItem } from "../../components/List";
 import { SearchBtn } from "../../components/Form";
 
-class Search extends Component {
+class Search extends Component {    
     state = {
-        customer: null,
-        startDate: null,
-        endDate: null,
+        customer: '',
+        startDate: '',
+        endDate: '',
         transactions: [], 
-        show: false
     };
 
-    componentDidMount = ( 
-        console.log(this.state)
-    );
+    componentDidMount() {
+        this.loadTransactions();
+    }
 
-    handleClose = (
-        this.setState({show: false})
-    ); 
-
-    handleShow = (
-        this.setState({show: true})
-    );
+    loadTransactions = data => {
+        // Data cannont be undefined b/c this is fired when the component mounts    
+        if (data) {
+            this.setState({ transactions: data });
+            console.log("State.transactions upated to: ", this.state.transactions);
+        }
+        
+    };
 
     onStartDateChange = startDate => this.setState({ startDate });
     onEndDateChange = endDate => this.setState({ endDate });
@@ -43,6 +43,21 @@ class Search extends Component {
 
     handleFormSubmit = event => {
         event.preventDefault();
+
+        // const startDate = new Date(this.state.startDate)
+        // const endDate = new Date(this.state.endDate) 
+
+        console.log(typeof this.state.customer);
+
+        API.queryArticles({
+            startDate: this.state.startDate, 
+            endDate: this.state.endDate, 
+            customer: this.state.customer.toString()
+        })
+            .then( res => console.log(res))
+            .catch(err => console.log(err)); 
+
+
     };
 
     render() {
@@ -55,22 +70,31 @@ class Search extends Component {
                             <div className="searchForm">
                                 <h1>Search</h1>
                                 <hr />
-                                <form >
+                                <form>
                                     <FormGroup controlId="customerSelect">
                                         <ControlLabel>Customer Type</ControlLabel>
-                                        <FormControl componentClass="select" placeholder="select">
+                                        <FormControl 
+                                            value={this.state.customer} 
+                                            onChange={this.handleInputChange}
+                                            name="customer"
+                                            componentClass="select" 
+                                            placeholder="select">
                                             <option value="select">Select...</option>
                                             <option value="1">Zone One</option>
                                             <option value="2">Zone Two</option>
                                             <option value="3">Zone Three</option>
                                         </FormControl>
                                     </FormGroup>
-                                    <FieldGroup
-                                        id="loyaltyCustomer"
-                                        type="text"
-                                        label="Loyalty Customer"
-                                        placeholder="Phone Number (like 3335557777)"
-                                    />
+                                    <FormGroup controlId="loyaltyCustomer"  >
+                                        <ControlLabel>Or:  Loyalty Customer</ControlLabel>
+                                        <FormControl 
+                                            value={this.state.customer} 
+                                            onChange={this.handleInputChange}  
+                                            name="customer"
+                                            type="text" 
+                                            placeholder="Phone Number (like 3335557777)" 
+                                        />
+                                    </FormGroup>
                                     <p>Between dates</p>
                                     <DatePicker
                                         value={this.state.startDate}
@@ -92,7 +116,7 @@ class Search extends Component {
                                 </form>
                             </div>
                         </Col>
-                        <Col size="md-6 sm-12" >
+                        <Col size="md-6" >
                             <div className="resultsPanel">
                                 <h1>Results</h1>
                                 <hr />
@@ -118,23 +142,6 @@ class Search extends Component {
                         </Col>
                     </Row>
                 </Container>
-                {/* Upload modal */}
-                <Modal show={this.state.show} onHide={this.handleClose}>
-                    <Modal.Header closeButton>
-                        <Modal.Title>File Upload</Modal.Title>
-                        <Modal.Body> 
-                            Use the file upload below to upload a new report - 
-                            <form ref='uploadForm' 
-                                id='uploadForm' 
-                                action= '' //this will be the express post route 
-                                method='post' 
-                                encType="multipart/form-data"> 
-                            <input type="file" name="report" />
-                            <input type='submit' value='Upload!' />
-                            </form> 
-                        </Modal.Body>
-                     </Modal.Header>
-                </Modal>
             </div>
         );
     };
@@ -142,12 +149,12 @@ class Search extends Component {
 
 export default Search;
 
-function FieldGroup({ id, label, help, ...props }) {
-    return (
-        <FormGroup controlId={id}>
-            <ControlLabel>{label}</ControlLabel>
-            <FormControl {...props} />
-            {help && <HelpBlock>{help}</HelpBlock>}
-        </FormGroup>
-    );
-}
+// function FieldGroup({ id, label, help, ...props }) {
+//     return (
+//         <FormGroup controlId={id}>
+//             <ControlLabel>{label}</ControlLabel>
+//             <FormControl {...props} />
+//             {help && <HelpBlock>{help}</HelpBlock>}
+//         </FormGroup>
+//     );
+// }

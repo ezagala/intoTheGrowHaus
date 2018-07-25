@@ -16,5 +16,14 @@ export default {
   // Saves to the DB 
   saveTrangetTransaction: function(transactionData) {
     return axios.post("/api/transactions", transactionData);
+  }, 
+  queryArticles: function(conditions) {
+    return axios.get("/api/transactions/query", {
+      params: {
+        startDate: conditions.startDate, 
+        endDate: conditions.endDate, 
+        customer: conditions.customer
+      }
+    }); 
   }
 };

@@ -2,7 +2,7 @@ import React from "react";
 import "./Nav.css";
 // import Logo from "../../assets/growHausLogo.png"
 import LogOut from "../../assets/signOut.png"
-import Upload from "../../assets/upload.png"
+// import Upload from "../../assets/upload.png"
 
 
 const Nav = (prop) => (
