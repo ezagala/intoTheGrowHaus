@@ -4,17 +4,7 @@ var passport = require('passport');
 const db = require("./models");
 var GoogleTokenStrategy = require('passport-google-token').Strategy;
 var config = require('./config');
-const dotenv = require('dotenv');
-
-
-
-if (process.env && process.env.NODE_ENV) {
-    dotenv.config({path: '.env'});
-  } else {
-    dotenv.config({path: '.env.development'});
-  }
-
-require('dotenv').config({path: '.env.development'})
+require('dotenv').config()
 
 
 module.exports = function () {
