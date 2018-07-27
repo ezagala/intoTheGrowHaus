@@ -8,7 +8,7 @@
   "scripts": {
     "heroku-postbuild": "cd client && npm i && npm run build",
     "start": "if-env NODE_ENV=production && npm run start:prod || npm run start:dev",
-    "start:prod": "node server.js",
+    "start:prod": "REACT_APP_ENV=production node server.js",
     "start:dev": "concurrently \"nodemon server.js\" \"cd client && yarn start\"",
     "seed": "node seed.js"
   },
