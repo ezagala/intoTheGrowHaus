@@ -1,10 +1,19 @@
 'use strict';
 
-var passport = require('passport');
+const passport = require('passport');
 const db = require("./models");
-var GoogleTokenStrategy = require('passport-google-token').Strategy;
-var config = require('./config');
-require('dotenv').config()
+const GoogleTokenStrategy = require('passport-google-token').Strategy;
+const config = require('./config');
+const dotenv = require('dotenv')
+
+process.env.NODE_ENV = process.env.NODE_ENV || 'development';
+
+if (process.env.NODE_ENV === 'development') {
+    dotenv.config();
+  } else if (process.env.NODE_ENV === 'production') {
+    dotenv.config({ path: '.env.development' });
+  }
+
 
 
 module.exports = function () {
