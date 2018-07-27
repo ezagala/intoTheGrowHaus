@@ -11,7 +11,7 @@ process.env.NODE_ENV = process.env.NODE_ENV || 'development';
 if (process.env.NODE_ENV === 'development') {
     dotenv.config();
   } else if (process.env.NODE_ENV === 'production') {
-    dotenv.config({ path: '.env.development' });
+    dotenv.config({ path: './development.env' });
   }
 
 
