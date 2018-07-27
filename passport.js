@@ -4,7 +4,7 @@ var passport = require('passport');
 const db = require("./models");
 var GoogleTokenStrategy = require('passport-google-token').Strategy;
 var config = require('./config');
-require('dotenv').config()
+require('dotenv').config({path: '.env.development'})
 
 
 module.exports = function () {
