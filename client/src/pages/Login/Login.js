@@ -32,6 +32,7 @@ class Login extends Component {
         fetch('/api/transactions/auth', options)
             .then(r => {
                 const token = r.headers.get('x-auth-token');
+                console.log("JSON is", r.json()); 
                 r.json().then(user => {
                     if (token) {
                         this.setState({ isAuthenticated: true, user, token })

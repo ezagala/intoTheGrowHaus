@@ -8,6 +8,8 @@ require('dotenv').config();
 
 module.exports = function () {
 
+    console.log("the clientID is", process.env.GOOGLE_CLIENT_ID)
+
     passport.use(new GoogleTokenStrategy({
             clientID: process.env.GOOGLE_CLIENT_ID,
             clientSecret: process.env.GOOGLE_CLIENT_SECRET
