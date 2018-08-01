@@ -16,10 +16,68 @@ class Search extends Component {
         startDate: '',
         endDate: '',
         transactions: [], 
+        columns: [
+            ['x'], 
+            ['data1']
+        ]
     };
 
     componentDidMount() {
-        // this.loadTransactions();
+        API.getTransactions()
+            .then(res => {
+
+                // Define first and last transations of the data set 
+                let firstDate = res.data[res.data.length -1].date; 
+                let lastDate = res.data[0].date; 
+                // Define initial sales total for a specific date
+                let dayTotal = 0;
+                // Define a the first value for the curent day 
+                let currentDate = moment(firstDate).format("YYYY/DD/MM"); 
+
+                res.data.forEach(trans => {
+                    // if the transaction was made a specific day, add it to the total of transactions for that day, then push that total to columns as data1 array
+                    
+                    if (moment(trans.date).format("YYYY/DD/MM") === currentDate) {
+                        dayTotal += trans.transTotal; 
+                    } else {
+                        // Update data1
+                        if (dayTotal !== 0) this.state.columns[1].push(dayTotal); 
+                        // reset dayTotal
+                        dayTotal = 0; 
+                        // Set currentDate to the new date 
+                        currentDate = moment(trans.date).format("YYYY/DD/MM"); 
+                        // Update day total with the first transTotal for that day
+                        dayTotal += trans.transTotal; 
+                        
+                    }
+                    // (if the transaction was made on a date between the first and last transaction) && (the date is divisible by 5) && (the date does not already exist in the array), then push that (formatted) date to the columns x array 
+                    if ((trans.date > firstDate) && (trans.date < lastDate)) {
+                        let xTickTest = moment(trans.date).format("DD");
+                        let xTick = moment(trans.date).format("YYYY/DD/MM"); 
+                        if ((xTickTest % 5 === 0) && (this.state.columns[0].indexOf(xTick) === -1)) {
+                            this.state.columns[0].push(xTick); 
+                        }
+                    }
+                })
+                console.log("data1: ", this.state.columns[1]); 
+                console.log("x axis: ", this.state.columns[0]); 
+            }); 
+    }
+
+    // Will render a chart that shows the trend of daily sales totals for the entire history
+    renderTrend = () => {
+        // API.getTransactions()
+        //     .then(res => {
+
+        //         res.data.forEach(trans => {
+        //             // if the transaction was made a specific day, add it to the total of transaction for that day
+        //                 // push that total to columns as data1 array
+                    
+                    
+        //         })
+
+        //         console.log(res.data[450])
+        //     }); 
     }
 
     loadTransactions = data => {
@@ -65,9 +123,20 @@ class Search extends Component {
 
     render() {
         return (
+                
             <div>
                 <Nav onClick={this.logout} />
                 <Container fluid>
+                <Row>
+                    <Col size="md-12">
+                        {
+                            this.state.columns[0].length < 1 ? 
+                            (<div id="chart"></div>) 
+                                : 
+                            (<span>{/*Chart will not be render if there is no chart data*/}</span>)
+                        }
+                    </Col> 
+                </Row> 
                     <Row>
                         <Col size="md-6">
                             <div className="searchForm">
@@ -130,10 +199,10 @@ class Search extends Component {
                                                 <h4>Transaction ID: {transaction.transID}</h4>
                                                 <hr/> 
                                                 <ListGroup>
-                                                    <p>- Customer: {transaction.customer}</p>
-                                                    <p>- Date: {moment(transaction.date).format("MM/DD/YYYY")}</p>
-                                                    <p>- Tender Type: {transaction.tenderType}</p>
-                                                    <p>- Total: ${transaction.transTotal}</p>
+                                                    <ListItem>- Customer: {transaction.customer}</ListItem>
+                                                    <ListItem>- Date: {moment(transaction.date).format("MM/DD/YYYY")}</ListItem>
+                                                    <ListItem>- Tender Type: {transaction.tenderType}</ListItem>
+                                                    <ListItem>- Total: ${transaction.transTotal}</ListItem>
                                                 </ListGroup>
                                             </ListGroupItem>
                                         ))}
@@ -151,13 +220,3 @@ class Search extends Component {
 };
 
 export default Search;
-
-// function FieldGroup({ id, label, help, ...props }) {
-//     return (
-//         <FormGroup controlId={id}>
-//             <ControlLabel>{label}</ControlLabel>
-//             <FormControl {...props} />
-//             {help && <HelpBlock>{help}</HelpBlock>}
-//         </FormGroup>
-//     );
-// }
