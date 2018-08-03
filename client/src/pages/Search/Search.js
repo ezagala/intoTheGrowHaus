@@ -6,11 +6,13 @@ import { FormGroup, ControlLabel, FormControl, ListGroup, ListGroupItem } from '
 import moment from 'moment';
 import API from "../../utils/API";
 import "./Search.css"
+import "./c3.css"
 import Nav from "../../components/Nav"
 import { Col, Row, Container } from "../../components/Grid";
 import { List, ListItem } from "../../components/List";
 import { SearchBtn } from "../../components/Form";
 
+let chart = undefined;
 
 class Search extends Component {
     state = {
@@ -20,12 +22,12 @@ class Search extends Component {
         transactions: [],
         columns: [
             ['x'],
-            ['data1']
+            ['Daily totals']
         ]
     };
 
     componentDidMount() {
-        this.renderTrend(); 
+        this.renderTrend();
     }
 
     // Will render a chart that shows the trend of daily sales totals for the entire history
@@ -60,31 +62,31 @@ class Search extends Component {
                     // (if the transaction was made on a date between the first and last transaction) && (the date is divisible by 5) && (the date does not already exist in the array), then push that (formatted) date to the columns x array 
                     if ((trans.date > firstDate) && (trans.date < lastDate)) {
                         let xTickTest = moment(trans.date).format("DD");
-                        let xTick = moment(trans.date).format("YYYY/DD/MM");
-                        if ((xTickTest % 5 === 0) && (this.state.columns[0].indexOf(xTick) === -1)) {
+                        let xTick = moment(trans.date).format("YYYY-MM-DD");
+                        if ((xTickTest % 2 === 0) && (this.state.columns[0].indexOf(xTick) === -1)) {
                             this.state.columns[0].push(xTick);
                         }
                     }
                 })
-                console.log("data1: ", this.state.columns[1]);
-                console.log("x axis: ", this.state.columns[0]);
-            });
+                console.log("The data is: ", this.state.columns)
 
-        const chart = c3.generate({
-            bindto: '#chart',
-            data: {
-                x: "Year", 
-                columns: this.state.columns
-            }, 
-            axis: {
-                x: {
-                    type: 'timeseries',
-                    tick: {
-                        format: '%m/%d'
+                let chart = c3.generate({
+                    // bindto: '#chart',
+                    data: {
+                        x: 'x',
+                        columns: this.state.columns,
+                    },
+                    axis: {
+                        x: {
+                            type: 'timeseries',
+                            tick: {
+                                format: '%m/%d'
+                            }
+                        }
                     }
-                }
-            }
-        })
+                })
+
+            });
     }
 
     loadTransactions = data => {
@@ -135,13 +137,22 @@ class Search extends Component {
                 <Nav onClick={this.logout} />
                 <Container fluid>
                     <Row>
-                        <Col size="md-12">
-                            {
-                                this.state.columns[0].length < 1 ?
-                                    (<div id="chart"></div>)
-                                    :
-                                    (<span>{/*Chart will not be render if there is no chart data*/}</span>)
-                            }
+                        <Col size="md-12" >
+                            <div className="chart">
+                                {
+                                    chart === undefined ?
+                                        (
+                                            <div>
+                                                <h1>History of total transactions by day</h1>
+                                                <div id="chart"></div>
+                                            </div>
+                                        )
+                                        :
+                                        (<span>{/*Chart will not be render if there is no chart data*/}</span>)
+                                }
+                                {/* <h1>History of total transactions by day</h1>
+                                <div id="chart"></div> */}
+                            </div>
                         </Col>
                     </Row>
                     <Row>
@@ -227,3 +238,11 @@ class Search extends Component {
 };
 
 export default Search;
+
+
+// {
+//     this.state.columns[0].length > 1 ?
+//         (<div id="chart"></div>)
+//         :
+//         (<span>{/*Chart will not be render if there is no chart data*/}</span>)
+// }
