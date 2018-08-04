@@ -1,6 +1,5 @@
 import React, { Component } from "react";
 import c3 from "c3";
-// import {Redirect} from "react-router-dom";
 import DatePicker from 'react-date-picker';
 import { FormGroup, ControlLabel, FormControl, ListGroup, ListGroupItem } from 'react-bootstrap';
 import moment from 'moment';
@@ -11,8 +10,6 @@ import Nav from "../../components/Nav"
 import { Col, Row, Container } from "../../components/Grid";
 import { List, ListItem } from "../../components/List";
 import { SearchBtn } from "../../components/Form";
-
-let chart = undefined;
 
 class Search extends Component {
     state = {
@@ -32,6 +29,7 @@ class Search extends Component {
 
     // Will render a chart that shows the trend of daily sales totals for the entire history
     renderTrend = () => {
+        // Query the DB for all transactions 
         API.getTransactions()
             .then(res => {
 
@@ -43,15 +41,17 @@ class Search extends Component {
                 // Define a the first value for the curent day 
                 let currentDate = moment(firstDate).format("YYYY/DD/MM");
 
+                // Iterate through each transaction 
                 res.data.forEach(trans => {
-                    // if the transaction was made a specific day, add it to the total of transactions for that day, then push that total to columns as data1 array
 
+                    // If the transaction was made a specific day, add it to the total of transactions for that day, then push that total to data1 array
                     if (moment(trans.date).format("YYYY/DD/MM") === currentDate) {
                         dayTotal += trans.transTotal;
                     } else {
+                        // Otherwise: 
                         // Update data1
                         if (dayTotal !== 0) this.state.columns[1].push(dayTotal);
-                        // reset dayTotal
+                        // Reset dayTotal
                         dayTotal = 0;
                         // Set currentDate to the new date 
                         currentDate = moment(trans.date).format("YYYY/DD/MM");
@@ -59,7 +59,7 @@ class Search extends Component {
                         dayTotal += trans.transTotal;
 
                     }
-                    // (if the transaction was made on a date between the first and last transaction) && (the date is divisible by 5) && (the date does not already exist in the array), then push that (formatted) date to the columns x array 
+                    // (if the transaction was made on a date between the first and last transaction) && (the date is even) && (the date does not already exist in the array), then push that (formatted) date to the columns x array 
                     if ((trans.date > firstDate) && (trans.date < lastDate)) {
                         let xTickTest = moment(trans.date).format("DD");
                         let xTick = moment(trans.date).format("YYYY-MM-DD");
@@ -70,6 +70,10 @@ class Search extends Component {
                 })
                 console.log("The data is: ", this.state.columns)
 
+                // This seems janky, however the chart wasn't rendering otherwise. Need to reactor the code above to set state there. 
+                this.setState({columns: this.state.columns}); 
+
+                // Generate the c3 chart and use the current state to pass data through 
                 let chart = c3.generate({
                     // bindto: '#chart',
                     data: {
@@ -140,7 +144,7 @@ class Search extends Component {
                         <Col size="md-12" >
                             <div className="chart">
                                 {
-                                    chart === undefined ?
+                                    this.state.columns[0].length > 1 ?
                                         (
                                             <div>
                                                 <h1>History of total transactions by day</h1>
@@ -150,8 +154,6 @@ class Search extends Component {
                                         :
                                         (<span>{/*Chart will not be render if there is no chart data*/}</span>)
                                 }
-                                {/* <h1>History of total transactions by day</h1>
-                                <div id="chart"></div> */}
                             </div>
                         </Col>
                     </Row>
