@@ -10,6 +10,7 @@
   "private": true,
   "dependencies": {
     "axios": "^0.18.0",
+    "c3": "^0.6.6",
     "concurrently": "^3.6.1",
     "cookie-parser": "^1.4.3",
     "debug": "^3.1.0",

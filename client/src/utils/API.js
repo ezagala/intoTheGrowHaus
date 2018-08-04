@@ -2,11 +2,11 @@ import axios from "axios";
 
 export default {
   // Gets all
-  getTransaction: function() {
+  getTransactions: function() {
     return axios.get("/api/transactions");
   },
   // Gets w/ specific id
-  getTransactions: function(id) {
+  getTransaction: function(id) {
     return axios.get("/api/transactions/" + id);
   },
   // Deletes w/ specific id 
