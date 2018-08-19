@@ -14,17 +14,17 @@ More robust querying features and visualizations are in development.
 Contributions are not being sought at this time. However this is liable to change. Please reach out directly with any inquiries or interest. 
 
 ## Built With
--Axios 
--c3 
--Cheerio 
--JSON Web Token 
--Moment 
--Mongo & Mongoose 
--Passport 
--React 
--React Bootstrap 
--React Date Picker 
--React DOM 
+- Axios 
+- c3 
+- Cheerio 
+- JSON Web Token 
+- Moment 
+- Mongo & Mongoose 
+- Passport 
+- React 
+- React Bootstrap 
+- React Date Picker 
+- React DOM 
 
 ## Authors 
 [Eric Zagala](https://ericzagala.com/)
