@@ -26,5 +26,5 @@ Contributions are not being sought at this time. However this is liable to chang
 -React Date Picker 
 -React DOM 
 
-##Authors 
+## Authors 
 [Eric Zagala](ericzagala.com)
