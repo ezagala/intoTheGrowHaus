@@ -27,4 +27,4 @@ Contributions are not being sought at this time. However this is liable to chang
 -React DOM 
 
 ## Authors 
-[Eric Zagala](ericzagala.com)
+[Eric Zagala](https://ericzagala.com/)
