@@ -3,6 +3,8 @@ This application is intended to provide a view into The GrowHaus' market data. M
 
 The application is currently deployed [here](https://intense-sea-51551.herokuapp.com/).
 
+__Note:__ This project was shelved prior to completion. Work, including a signifcant refactor, is planned to resume shortly. 
+
 ## Usage
 At the time of this writting, the application may be used to search transaction history for transactions between a specified date range for a specific user or user type.  
 
