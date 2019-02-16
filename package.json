@@ -9,7 +9,7 @@
     "heroku-postbuild": "cd client && npm i && npm run build",
     "start": "if-env NODE_ENV=production && npm run start:prod || npm run start:dev",
     "start:prod": "REACT_APP_ENV=production node server.js",
-    "start:dev": "concurrently \"nodemon server.js\" \"cd client && yarn start\"",
+    "start:dev": "nodemon server.js && cd client && npm run start",
     "seed": "node seed.js"
   },
   "dependencies": {
@@ -30,7 +30,7 @@
     "morgan": "~1.9.0",
     "passport": "^0.4.0",
     "passport-google-token": "^0.1.2",
-    "pug": "2.0.0-beta11",
+    "pug": "^2.0.3",
     "react": "^16.4.1",
     "react-bootstrap": "^0.32.1",
     "react-date-picker": "^6.11.2",
