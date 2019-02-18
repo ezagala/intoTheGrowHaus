@@ -24,11 +24,12 @@ class Search extends Component {
     };
 
     componentDidMount() {
-        this.renderTrend();
+        // this.renderTrend(); Commented out for the time being as there is not data in the DB 
     }
 
     // Will render a chart that shows the trend of daily sales totals for the entire history
     renderTrend = () => {
+
         // Query the DB for all transactions 
         API.getTransactions()
             .then(res => {
@@ -43,6 +44,7 @@ class Search extends Component {
 
                 // Iterate through each transaction 
                 res.data.forEach(trans => {
+                  console.log("THE TRANS IS: ", trans)
 
                     // If the transaction was made a specific day, add it to the total of transactions for that day, then push that total to data1 array
                     if (moment(trans.date).format("YYYY/DD/MM") === currentDate) {
