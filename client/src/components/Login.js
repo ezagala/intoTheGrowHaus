@@ -13,7 +13,7 @@ const googleButtonStyle = {
   color: 'rgb(255, 255, 255)',
   width: '190px',
   padding: '10px 0 10px 0',
-  margin: '10px 10px',
+  margin: '0 0 10px 0 ',
   border: '1px solid transparent',
   borderRadius: '2px',
   fontWeight: 'bold'
@@ -33,7 +33,7 @@ class Login extends Component {
     this.setState({ [name]: value });
   };
 
-  googleResponse = (response) => {
+  loginWithGoogle = (response) => {
     const tokenBlob = new Blob([JSON.stringify({ access_token: response.accessToken }, null, 2)], { type: 'application/json' });
     const options = {
         method: 'POST',
@@ -60,7 +60,7 @@ class Login extends Component {
       <Redirect to="/Search" />
         : 
           <Wrapper
-            width="25%"
+            width="20%"
             height="65%"
             margin="5% auto 0 auto"
             background="rgba(218, 223, 225, .95)"
@@ -68,7 +68,7 @@ class Login extends Component {
             login
           >
             <HeadingOne
-              margin="0 0 25px 0"
+              margin="25px 0 20px 0"
             >
               Welcome!
             </HeadingOne>
@@ -77,8 +77,8 @@ class Login extends Component {
               style={googleButtonStyle}
               clientId={config.GOOGLE_CLIENT_ID}
               buttonText="Login"
-              onSuccess={this.googleResponse}
-              onFailure={this.googleResponse}
+              onSuccess={this.loginWithGoogle}
+              onFailure={this.loginWithGoogle}
             />
           </Wrapper>
     )
