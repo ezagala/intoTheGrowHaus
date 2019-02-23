@@ -1,6 +1,7 @@
-import React, { Component } from 'react'; 
+import React, { Fragment, Component } from 'react'; 
 import { Redirect } from 'react-router-dom'; 
 
+import LoginBackground from '../styled/LoginBackground'
 import Wrapper from '../styled/layout/Wrapper'; 
 import AnimateUp from '../components/AnimateUp'; 
 import HeadingOne from '../styled/HeadingOne'
@@ -20,7 +21,7 @@ const googleButtonStyle = {
   fontWeight: 'bold'
 }
 
-class Login extends Component { 
+export default class Login extends Component { 
   state = {
     isAuthenticated: false,
     user: null, 
@@ -60,32 +61,29 @@ class Login extends Component {
       isAuthenticated && user && token ? 
       <Redirect to="/Search" />
         : 
-        <AnimateUp>
-          <Wrapper
-            width="20%"
-            height="65%"
-            margin="5% auto 0 auto"
-            background="rgba(218, 223, 225, .95)"
-            borderRadius="10px"
-            login
-          >
-            <HeadingOne
-              margin="25px 0 20px 0"
+        <Fragment>
+          <LoginBackground />
+          <AnimateUp>
+            <Wrapper
+              width="20%"
+              height="65%"
+              margin="5% auto 0 auto"
+              background="rgba(218, 223, 225, .95)"
+              borderRadius="10px"
+              login
             >
-              Welcome!
-            </HeadingOne>
-            <p>Login with Google below:</p>
-            <GoogleLogin
-              style={googleButtonStyle}
-              clientId={config.GOOGLE_CLIENT_ID}
-              buttonText="Login"
-              onSuccess={this.loginWithGoogle}
-              onFailure={this.loginWithGoogle}
-            />
-          </Wrapper>
-        </AnimateUp>
+              <HeadingOne margin="25px 0 20px 0">Welcome!</HeadingOne>
+              <p>Login with Google below:</p>
+              <GoogleLogin
+                style={googleButtonStyle}
+                clientId={config.GOOGLE_CLIENT_ID}
+                buttonText="Login"
+                onSuccess={this.loginWithGoogle}
+                onFailure={this.loginWithGoogle}
+              />
+            </Wrapper>
+          </AnimateUp>
+        </Fragment>
     )
   }
 }
-
-export default Login; 

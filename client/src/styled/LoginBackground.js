@@ -1,6 +1,7 @@
 import { createGlobalStyle } from 'styled-components';
+import BackgroundImage from '../assets/growhausBackgroundImage.jpg'; 
 
-const GlobalStyles = createGlobalStyle`
+const LoginBackground = createGlobalStyle`
 
   @import url('https://fonts.googleapis.com/css?family=Pontano+Sans');
 
@@ -14,8 +15,14 @@ const GlobalStyles = createGlobalStyle`
   html, body {
     margin: 0;
   }
+
+  body {
+    height: auto;
+    min-height: 100%;
+    background-image: url(${BackgroundImage}); 
+  }
 `
 
-export default GlobalStyles; 
+export default LoginBackground; 
 
 
