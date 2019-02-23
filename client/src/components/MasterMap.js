@@ -12,10 +12,9 @@ export default class MasterMap extends Component {
   render() {
     const position = [this.state.lat, this.state.lng]
     return(
-      <Map 
+      <Map
         height="100%"
-        center={position} 
-        zoom={this.state.zoom}
+        center={position} zoom={this.state.zoom}
       >
         <TileLayer
           attribution={'<a href="http://osm.org/copyright">OpenStreetMap</a>'}

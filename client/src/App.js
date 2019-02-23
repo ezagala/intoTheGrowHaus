@@ -2,12 +2,11 @@ import React, { Fragment } from "react";
 import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
 
 import Login from './components/Login';
-import MasterMap from './components/Map';
+import MasterMap from './components/MasterMap';
 import Search from './pages/Search';
 import NoMatch from './pages/NoMatch';
 
 import GlobalStyles from './styled/GlobalStyles';
-
 
 const App = () => (
 <Fragment>
