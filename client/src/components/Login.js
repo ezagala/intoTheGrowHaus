@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { Redirect } from 'react-router-dom'; 
 
 import Wrapper from '../styled/layout/Wrapper'; 
+import AnimateUp from '../components/AnimateUp'; 
 import HeadingOne from '../styled/HeadingOne'
 
 import GoogleLogin from 'react-google-login'; 
@@ -59,6 +60,7 @@ class Login extends Component {
       isAuthenticated && user && token ? 
       <Redirect to="/Search" />
         : 
+        <AnimateUp>
           <Wrapper
             width="20%"
             height="65%"
@@ -81,6 +83,7 @@ class Login extends Component {
               onFailure={this.loginWithGoogle}
             />
           </Wrapper>
+        </AnimateUp>
     )
   }
 }
