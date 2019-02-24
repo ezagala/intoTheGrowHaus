@@ -14,11 +14,6 @@ const GlobalStyles = createGlobalStyle`
   html, body {
     margin: 0;
   }
-
-  .leaflet-container {
-    height: 100%; 
-    width: 100%; 
-  }
 `
 
 export default GlobalStyles; 

@@ -59,7 +59,7 @@ export default class Login extends Component {
     const { isAuthenticated, user, token } = this.state; 
     return (
       isAuthenticated && user && token ? 
-      <Redirect to="/Search" />
+      <Redirect to="/map" />
         : 
         <Fragment>
           <LoginBackground />
